@@ -10,6 +10,23 @@ public class SongsDetail {
     private long id ;
     private String artist;
     private String title;
+    private String duration;
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public SongsDetail(long id, String artist, String title, String duration) {
+
+        this.id = id;
+        this.artist = artist;
+        this.title = title;
+        this.duration = duration;
+    }
 
     public SongsDetail(long id, String artist, String title) {
         this.id = id;

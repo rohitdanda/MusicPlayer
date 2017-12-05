@@ -18,6 +18,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,11 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         Collections.sort(songsDetailArrayList, new Comparator<SongsDetail>(){
             public int compare(SongsDetail a, SongsDetail b){
-                return a.getTitle().compareTo(b.getTitle());
+                return b.getTitle().compareTo(a.getTitle());
             }
         });
 
         Log.i("Aray",songsDetailArrayList.get(4).toString());
+
+
 
         Adapter adapterhere = new Adapter(songsDetailArrayList,this);
 
@@ -82,13 +85,22 @@ public class MainActivity extends AppCompatActivity {
                     (android.provider.MediaStore.Audio.Media._ID);
             int artistColumn = musiccursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
+
+            int songduration = musiccursor.getColumnIndex(android.provider.MediaStore.Audio.Media.DURATION);
             //add songs to list
             do {
                 long thisId = musiccursor.getLong(idColumn);
                 String thisTitle = musiccursor.getString(titleColumn);
                 String thisArtist = musiccursor.getString(artistColumn);
+                long thisTime = musiccursor.getLong(songduration);
 
-                songsDetailArrayList.add(new SongsDetail(thisId, thisTitle, thisArtist));
+                String converttime = String.format("%d:%02d" ,
+                        TimeUnit.MILLISECONDS.toMinutes(thisTime),
+                        (TimeUnit.MILLISECONDS.toSeconds(thisTime)) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(thisTime))
+                );
+
+                songsDetailArrayList.add(new SongsDetail(thisId, thisTitle, thisArtist,converttime));
             }
             while (musiccursor.moveToNext());
         }

@@ -49,11 +49,13 @@ public class Adapter extends BaseAdapter {
 
         TextView songView = (TextView)linearLayout.findViewById(R.id.song_title);
         TextView artistView = (TextView)linearLayout.findViewById(R.id.song_artist);
+        TextView time =(TextView)linearLayout.findViewById(R.id.song_time);
 
         SongsDetail currSong = songs.get(i);
         //get title and artist strings
         songView.setText(currSong.getTitle());
         artistView.setText(currSong.getArtist());
+        time.setText(currSong.getDuration());
         //set position as tag
         linearLayout.setTag(i);
         return linearLayout;
