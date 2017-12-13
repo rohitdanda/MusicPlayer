@@ -18,16 +18,18 @@ repositories {
     maven {
         url "https://jitpack.io"
     }
-}
-
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
+    maven {
+        url "http://dl.bintray.com/jeancsanchez/maven"
     }
-}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    allprojects {
+        repositories {
+            google()
+            jcenter()
+        }
+    }
+
+    task clean(type: Delete) {
+        delete rootProject.buildDir
+    }
 }

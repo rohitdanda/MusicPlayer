@@ -25,6 +25,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private MediaPlayer player;
 
+    //to add resume function to player
+    private int resumePosition;
+
     MediaController mediaController;
     //song list
     private ArrayList<SongsDetail> songs;
@@ -80,6 +83,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
 
+        stopMedia();
+
+        stopSelf();
+
     }
 
     @Override
@@ -90,7 +97,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
 
-        mediaPlayer.start();
+        playMedia();
 
     }
 
@@ -120,6 +127,33 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public void setSong(int songIndex){
         songPosn=songIndex;
+    }
+
+    private void playMedia() {
+        if (!player.isPlaying()) {
+            player.start();
+        }
+    }
+
+    private void stopMedia() {
+        if (player == null) return;
+        if (player.isPlaying()) {
+            player.stop();
+        }
+    }
+
+    private void pauseMedia() {
+        if (player.isPlaying()) {
+            player.pause();
+            resumePosition = player.getCurrentPosition();
+        }
+    }
+
+    private void resumeMedia() {
+        if (!player.isPlaying()) {
+            player.seekTo(resumePosition);
+            player.start();
+        }
     }
 
 }

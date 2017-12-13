@@ -26,6 +26,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".playerdesign"/>
+
         <service android:name="com.example.sairohit.musicplayerinterface.MusicService"/>
     </application>
 

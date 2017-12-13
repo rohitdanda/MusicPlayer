@@ -47,9 +47,9 @@ public class Adapter extends BaseAdapter {
 
         LinearLayout linearLayout = (LinearLayout)songInf.inflate(R.layout.songs,viewGroup,false);
 
-        TextView songView = (TextView)linearLayout.findViewById(R.id.song_title);
-        TextView artistView = (TextView)linearLayout.findViewById(R.id.song_artist);
-        TextView time =(TextView)linearLayout.findViewById(R.id.song_time);
+        TextView songView = linearLayout.findViewById(R.id.song_title);
+        TextView artistView = linearLayout.findViewById(R.id.song_artist);
+        TextView time = linearLayout.findViewById(R.id.song_time);
 
         SongsDetail currSong = songs.get(i);
         //get title and artist strings
