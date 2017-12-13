@@ -29,7 +29,9 @@ import java.util.zip.Inflater;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<SongsDetail> songsDetailArrayList;
-    private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final int PERMISSION_REQUEST_CODE = 0;
+
+    boolean permissiongranted = false;
     ListView listView;
 
     @Override
@@ -51,20 +53,33 @@ public class MainActivity extends AppCompatActivity {
 
         songsDetailArrayList = new ArrayList<SongsDetail>();
         if(Build.VERSION.SDK_INT>=23) {
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
-//
-//            }
-            if(checkPermission()){
+
+            PackageManager pm = this.getPackageManager();
+            int hasPerm = pm.checkPermission(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    this.getPackageName());
+            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
+
+                getSongfromDevice();
+
+                Collections.sort(songsDetailArrayList, new Comparator<SongsDetail>() {
+                    public int compare(SongsDetail a, SongsDetail b) {
+                        return b.getTitle().compareTo(a.getTitle());
+                    }
+                });
+
+                Log.i("Aray", songsDetailArrayList.get(4).toString());
 
 
+                Adapter adapterhere = new Adapter(songsDetailArrayList, this);
+
+                listView.setAdapter(adapterhere);
             }
             else {
                 requestPermission();
-
             }
         }
+
 
 //        Log.i("Aray",songsDetailArrayList.get(4).toString());
 
@@ -122,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
         if (result == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
-        else {
+        else
+        {
                 return false;
         }
 
@@ -156,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
                     listView.setAdapter(adapterhere);
 
+                    permissiongranted = true;
+
 
                 }
                 else {
@@ -172,10 +190,8 @@ public class MainActivity extends AppCompatActivity {
                     });
                     AlertDialog alert = alertBuilder.create();
                     alert.show();
-
-
+                    break;
                 }
-                break;
         }
     }
 
